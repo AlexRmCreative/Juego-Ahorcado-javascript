@@ -9,8 +9,22 @@ const palabrasAhorcado = [
 let palabraEscondida = palabrasAhorcado[Math.floor(Math.random() * palabrasAhorcado.length)];
 
 palabraHTML = document.getElementById('palabra');
+palabraHTML.innerHTML = "__________";
 Retry = document.getElementById('retry');
 Retry.className += " d-none";
+
+RestarVida = () => {
+    vida--;
+    body = document.getElementsByTagName('body');
+}
+EspaciarPalabra = () => {
+    let palabraEspaciada = '';
+    for (let i = 0; i < palabraHTML.innerHTML.length; i++) {
+        palabraEspaciada += `${palabraHTML.innerHTML[i]} `;
+    }
+    return palabraEspaciada;
+}
+palabraHTML.innerHTML = EspaciarPalabra();
 
 AdivinarLetra = (letra) => {
     let palabraEncontrada = false;
@@ -33,10 +47,11 @@ inputLetra.addEventListener('keyup', function onEvent(e) {
     if (e.key === 'Enter') {
         let letraComprobada = AdivinarLetra(inputLetra.value);
         if (letraComprobada == false && vida > 0){
-            vida--;
+            RestarVida();
             document.getElementById('imgState').src = `./img/Vida${vida}.png`;
         }
         palabraHTML.innerHTML = palabraAdivinada;
+        palabraHTML.innerHTML = EspaciarPalabra();
         inputLetra.value = '';
         ComprobarVida();
     }
@@ -51,9 +66,10 @@ inputPalabra.addEventListener('keyup', function onEvent(e) {
             palabraHTML.innerHTML = palabraEscondida.toUpperCase();
             document.getElementById('imgState').src = `./img/VidaWINNER.png`;
             Retry.className = Retry.className.replace('d-none', '');
+            JuegoFinalizado();
         }
         else{
-            vida--;
+            RestarVida();
             inputPalabra.value = '';
         }
         ComprobarVida();
@@ -63,15 +79,18 @@ inputPalabra.addEventListener('keyup', function onEvent(e) {
 ComprobarVida = () => {
     if(vida <= 0)
     {
+        palabraHTML.className += "text-danger h3 mt-3 text-decoration-line-through";
         JuegoFinalizado();
     }
 }
 
 JuegoFinalizado = () => {
+    palabraHTML.innerHTML = palabraEscondida.toUpperCase();
+
     Retry.className = Retry.className.replace('d-none', '');
     // Obtener todos los elementos <div> con clase "col" que no tengan la ID "retry"
     elementosCol = (document.querySelectorAll('div[class^="col"]:has(input):not(#retry)'));
-
+    //y los elimino
     elementosCol.forEach(elemento => {
         elemento.remove();
     });
