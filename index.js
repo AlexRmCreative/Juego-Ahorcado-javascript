@@ -8,6 +8,7 @@ const palabrasAhorcado = [
 ];
 let palabraEscondida = palabrasAhorcado[Math.floor(Math.random() * palabrasAhorcado.length)];
 
+letrasNoCoincidentes = ['', ' '];
 palabraHTML = document.getElementById('palabra');
 palabraHTML.innerHTML = "__________";
 Retry = document.getElementById('retry');
@@ -47,23 +48,29 @@ AdivinarLetra = (letra) => {
 
 inputLetra = document.getElementById('input-letra');
 inputLetra.addEventListener('keyup', function onEvent(e) {
-    if (e.key === 'Enter' && inputLetra.value != '') {
+    if (e.key === 'Enter' && !letrasNoCoincidentes.includes(inputLetra.value)) {
+        inputLetra.value = inputLetra.value.toLowerCase();
         let letraComprobada = AdivinarLetra(inputLetra.value);
         if (letraComprobada == false && vida > 0){
             RestarVida();
             document.getElementById('imgState').src = `./img/Vida${vida}.png`;
             document.getElementById('letras-usadas').innerHTML += inputLetra.value + '<br>';
+            letrasNoCoincidentes.push(inputLetra.value);
         }
         palabraHTML.innerHTML = palabraAdivinada;
         palabraHTML.innerHTML = EspaciarPalabra();
         inputLetra.value = '';
         ComprobarVida();
     }
+    else if (letrasNoCoincidentes.includes(inputLetra.value)){
+        inputLetra.value = '';
+    }
 });
 
 inputPalabra = document.getElementById('input-palabra');
 inputPalabra.addEventListener('keyup', function onEvent(e) {
     if (e.key === 'Enter') {
+        inputPalabra.value = inputPalabra.value.toLowerCase();
         if(inputPalabra.value == palabraEscondida)
         {
             palabraHTML.className += "text-success h3 mt-3";
@@ -99,4 +106,8 @@ JuegoFinalizado = () => {
     elementosCol.forEach(elemento => {
         elemento.remove();
     });
+
+    //Excepción
+    letrasUsadas = document.querySelector('div .no-coincidentes');
+    letrasUsadas.remove();
 }
