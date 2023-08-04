@@ -13,9 +13,12 @@ palabraHTML.innerHTML = "__________";
 Retry = document.getElementById('retry');
 Retry.className += " d-none";
 
+let intensityBoxShadow = 10;
 RestarVida = () => {
     vida--;
     body = document.getElementsByTagName('body');
+    document.body.style.boxShadow = `inset 0 0 ${intensityBoxShadow}px rgba(255, 0, 0, 1)`;
+    intensityBoxShadow += 30;
 }
 EspaciarPalabra = () => {
     let palabraEspaciada = '';
@@ -44,11 +47,12 @@ AdivinarLetra = (letra) => {
 
 inputLetra = document.getElementById('input-letra');
 inputLetra.addEventListener('keyup', function onEvent(e) {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && inputLetra.value != '') {
         let letraComprobada = AdivinarLetra(inputLetra.value);
         if (letraComprobada == false && vida > 0){
             RestarVida();
             document.getElementById('imgState').src = `./img/Vida${vida}.png`;
+            document.getElementById('letras-usadas').innerHTML += inputLetra.value + '<br>';
         }
         palabraHTML.innerHTML = palabraAdivinada;
         palabraHTML.innerHTML = EspaciarPalabra();
@@ -66,6 +70,7 @@ inputPalabra.addEventListener('keyup', function onEvent(e) {
             palabraHTML.innerHTML = palabraEscondida.toUpperCase();
             document.getElementById('imgState').src = `./img/VidaWINNER.png`;
             Retry.className = Retry.className.replace('d-none', '');
+            document.body.style.boxShadow = `inset 0 0 100px rgba(0, 255, 0, 1)`;
             JuegoFinalizado();
         }
         else{
