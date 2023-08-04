@@ -1,10 +1,13 @@
-vida = 7;
+let intensityBoxShadow = 10;
+let vida = 7;
 let palabraAdivinada = "________";
 const palabrasAhorcado = [
-    'cabellos', 'caballos', 'acertado', 'armarios', 'silbidos',
+    'cabellos', 'caballos', 'acertado', 'armarios', 'silbidos', 'montaña',
     'bloquear', 'botellas', 'disfraza', 'alfombra', 'calabozo', 'mascaras',
     'remolino', 'silencio', 'tormenta', 'holganza', 'celestes', 'usuarios',
-    'explorar', 'hormigas', 'invitado', 'nublados', 'zapatazo', 'aparecer'
+    'explorar', 'hormigas', 'invitado', 'nublados', 'zapatazo', 'aparecer',
+    'manzana', 'libro', 'lápiz', 'cielo', 'avión', 'playa', 'computadora',
+    'felicidad', 'arcoiris', 'chocolate', 'musica', 'bicicleta', 'estrella'
 ];
 let palabraEscondida = palabrasAhorcado[Math.floor(Math.random() * palabrasAhorcado.length)];
 
@@ -14,21 +17,20 @@ palabraHTML.innerHTML = "__________";
 Retry = document.getElementById('retry');
 Retry.className += " d-none";
 
-let intensityBoxShadow = 10;
+EspaciarPalabra = () => {
+    let palabraEspaciada = '';
+    for (let i = 0; i < palabraEscondida.length; i++) {
+        palabraEspaciada += `${palabraHTML.innerHTML[i]} `;
+    }
+    return palabraEspaciada;
+}
+palabraHTML.innerHTML = EspaciarPalabra();
 RestarVida = () => {
     vida--;
     body = document.getElementsByTagName('body');
     document.body.style.boxShadow = `inset 0 0 ${intensityBoxShadow}px rgba(255, 0, 0, 1)`;
     intensityBoxShadow += 30;
 }
-EspaciarPalabra = () => {
-    let palabraEspaciada = '';
-    for (let i = 0; i < palabraHTML.innerHTML.length; i++) {
-        palabraEspaciada += `${palabraHTML.innerHTML[i]} `;
-    }
-    return palabraEspaciada;
-}
-palabraHTML.innerHTML = EspaciarPalabra();
 
 AdivinarLetra = (letra) => {
     let palabraEncontrada = false;
