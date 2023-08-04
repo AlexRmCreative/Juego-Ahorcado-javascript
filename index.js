@@ -2,11 +2,11 @@ let intensityBoxShadow = 10;
 let vida = 7;
 let palabraAdivinada = "________";
 const palabrasAhorcado = [
-    'cabellos', 'caballos', 'acertado', 'armarios', 'silbidos', 'montaña',
-    'bloquear', 'botellas', 'disfraza', 'alfombra', 'calabozo', 'mascaras',
-    'remolino', 'silencio', 'tormenta', 'holganza', 'celestes', 'usuarios',
-    'explorar', 'hormigas', 'invitado', 'nublados', 'zapatazo', 'aparecer',
-    'manzana', 'libro', 'lápiz', 'cielo', 'avión', 'playa', 'computadora',
+    'cabello', 'caballo', 'acertado', 'armario', 'silbido',
+    'bloquear', 'botellas', 'disfraza', 'alfombra', 'calabozo', 'mascara',
+    'remolino', 'silencio', 'tormenta', 'holganza', 'celeste', 'usuarios',
+    'explorar', 'hormigas', 'invitado', 'nublado', 'zapatazo', 'aparecer',
+    'manzana', 'libro', 'lápiz', 'cielo', 'playa',
     'felicidad', 'arcoiris', 'chocolate', 'musica', 'bicicleta', 'estrella'
 ];
 let palabraEscondida = palabrasAhorcado[Math.floor(Math.random() * palabrasAhorcado.length)];
@@ -60,6 +60,11 @@ inputLetra.addEventListener('keyup', function onEvent(e) {
             letrasNoCoincidentes.push(inputLetra.value);
         }
         palabraHTML.innerHTML = palabraAdivinada;
+        palabraAdivinada.slice('_');
+        if(palabraAdivinada == palabraEscondida)
+        {
+            Ganador();
+        }
         palabraHTML.innerHTML = EspaciarPalabra();
         inputLetra.value = '';
         ComprobarVida();
@@ -75,12 +80,7 @@ inputPalabra.addEventListener('keyup', function onEvent(e) {
         inputPalabra.value = inputPalabra.value.toLowerCase();
         if(inputPalabra.value == palabraEscondida)
         {
-            palabraHTML.className += "text-success h3 mt-3";
-            palabraHTML.innerHTML = palabraEscondida.toUpperCase();
-            document.getElementById('imgState').src = `./img/VidaWINNER.png`;
-            Retry.className = Retry.className.replace('d-none', '');
-            document.body.style.boxShadow = `inset 0 0 100px rgba(0, 255, 0, 1)`;
-            JuegoFinalizado();
+            Ganador();
         }
         else{
             RestarVida();
@@ -89,6 +89,15 @@ inputPalabra.addEventListener('keyup', function onEvent(e) {
         ComprobarVida();
     }
 });
+
+Ganador = () => {
+    palabraHTML.className += "text-success h3 mt-3";
+    palabraHTML.innerHTML = palabraEscondida.toUpperCase();
+    document.getElementById('imgState').src = `./img/VidaWINNER.png`;
+    Retry.className = Retry.className.replace('d-none', '');
+    document.body.style.boxShadow = `inset 0 0 100px rgba(0, 255, 0, 1)`;
+    JuegoFinalizado();
+}
 
 ComprobarVida = () => {
     if(vida <= 0)
